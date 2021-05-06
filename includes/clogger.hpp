@@ -26,8 +26,7 @@ namespace clogger {
     };
 
     class clogger {
-        static const char   m_sep = '|';
-        std::ofstream       m_stream;
+        std::ofstream m_stream;
 
         void write(const char *message, const char *level);
         char *getTimestamp(const char *fmt);

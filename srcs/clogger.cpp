@@ -45,5 +45,9 @@ char *clogger::clogger::getTimestamp(const char *fmt) {
     return timestamp;
 }
 
-clogger::clogger::~clogger() = default;
+clogger::clogger::~clogger() {
+    if ( m_stream.is_open() ){
+        m_stream.close();
+    }
+}
 
