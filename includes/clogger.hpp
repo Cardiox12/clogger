@@ -27,9 +27,10 @@ namespace clogger {
 
     class clogger {
         static const char   m_sep = '|';
-        const char          *m_filename;
         std::ofstream       m_stream;
+
         void write(const char *message, const char *level);
+        char *getTimestamp(const char *fmt);
     public:
         clogger(const char *filename);
         ~clogger();

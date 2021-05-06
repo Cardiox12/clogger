@@ -5,7 +5,7 @@
 #include "../includes/clogger.hpp"
 
 clogger::clogger::clogger(const char *filename)
-    : m_filename( filename ), m_stream( filename, std::ios::app ) {}
+    : m_stream( filename, std::ios::app ) {}
 
 void clogger::clogger::debug(const char *message) {
     write(message, str_level[ log_level::DEBUG ]);
@@ -28,14 +28,21 @@ void clogger::clogger::fatal(const char *message) {
 }
 
 void clogger::clogger::write(const char *message, const char *level) {
-    char    timestamp[100];
-    time_t  now = time(nullptr);
-    tm      *tm_local = localtime(&now);
+    const char *timestamp = getTimestamp("%Y-%m-%dT%H:%M:%S");
 
-    strftime(timestamp, 100, "%Y-%m-%dT%H:%M:%S", tm_local);
     m_stream << "[" << timestamp << "] ";
     m_stream << "[" << level << "] ";
     m_stream << message << std::endl;
+    delete[] timestamp;
+}
+
+char *clogger::clogger::getTimestamp(const char *fmt) {
+    char    *timestamp = new char[100];
+    time_t  now = time(nullptr);
+    tm      *tm_local = localtime(&now);
+
+    strftime(timestamp, 100, fmt, tm_local);
+    return timestamp;
 }
 
 clogger::clogger::~clogger() = default;
